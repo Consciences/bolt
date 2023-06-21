@@ -1,7 +1,5 @@
 package me.consciences.bolt.version;
 
-package me.consciences.classes.utils.version;
-
 import org.bukkit.Bukkit;
 
 /**
