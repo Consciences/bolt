@@ -72,69 +72,6 @@ public class Message {
         this.actionBar = config.getString(path + ".action-bar.value", "");
     }
 
-    public void send(final Player player) {
-
-        if (this.messageEnabled) {
-
-            if (this.hoverTextEnabled) {
-
-                final List<TextComponent> components = new LinkedList<>();
-
-                for (final String message : this.messages) {
-
-                    final ComponentBuilder builder = new ComponentBuilder(message);
-
-                    builder.hoverText(this.hoverText);
-
-                    if (this.clickActionEnabled) {
-
-                        switch (this.action) {
-                            case COPY:
-                                builder.copyToClipboard(this.clickAction);
-                                break;
-                            case OPEN:
-                                builder.openUrl(this.clickAction);
-                                break;
-                            case COMMAND:
-                                builder.chat(this.clickAction);
-                                break;
-                            case SUGGEST:
-                                builder.suggest(this.clickAction);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-
-                    components.add(builder.build());
-                }
-
-                for (TextComponent component : components) {
-                    player.spigot().sendMessage(component);
-                }
-
-                return;
-            }
-
-            for (String message : this.messages) {
-                player.sendMessage(Color.parse(message));
-            }
-        }
-
-        if (this.soundEnabled) {
-            Optional<XSound> xSoundOptional = XSound.matchXSound(this.sound);
-            xSoundOptional.ifPresent(xSound -> xSound.play(player, this.volume, this.pitch));
-        }
-
-        if (this.actionBarEnabled) {
-            ActionBar.sendActionBar(player, (Color.parse(this.actionBar)));
-        }
-
-        if (this.titleEnabled) {
-            Titles.sendTitle(player, this.fadeInTicks, this.stayTicks, this.fadeOutTicks, Color.parse(this.title), Color.parse(this.subTitle));
-        }
-    }
-
     public void send(final Player player, final PlaceholderReplacer replacer) {
 
         if (this.messageEnabled) {
@@ -199,67 +136,8 @@ public class Message {
         }
     }
 
-    public void send(final CommandSender player) {
-
-        if (this.messageEnabled) {
-
-            if (this.hoverTextEnabled) {
-
-                final List<TextComponent> components = new LinkedList<>();
-
-                for (final String message : this.messages) {
-
-                    final ComponentBuilder builder = new ComponentBuilder(message);
-
-                    builder.hoverText(this.hoverText);
-
-                    if (this.clickActionEnabled) {
-
-                        switch (this.action) {
-                            case COPY:
-                                builder.copyToClipboard(this.clickAction);
-                                break;
-                            case OPEN:
-                                builder.openUrl(this.clickAction);
-                                break;
-                            case COMMAND:
-                                builder.chat(this.clickAction);
-                                break;
-                            case SUGGEST:
-                                builder.suggest(this.clickAction);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-
-                    components.add(builder.build());
-                }
-
-                for (TextComponent component : components) {
-                    player.spigot().sendMessage(component);
-                }
-
-                return;
-            }
-
-            for (String message : this.messages) {
-                player.sendMessage(Color.parse(message));
-            }
-        }
-
-        if (this.soundEnabled) {
-            Optional<XSound> xSoundOptional = XSound.matchXSound(this.sound);
-            xSoundOptional.ifPresent(xSound -> xSound.play((Player) player, this.volume, this.pitch));
-        }
-
-        if (this.actionBarEnabled) {
-            ActionBar.sendActionBar((Player) player, Color.parse(this.actionBar));
-        }
-
-        if (this.titleEnabled) {
-            Titles.sendTitle((Player) player, this.fadeInTicks, this.stayTicks, this.fadeOutTicks, Color.parse(this.title), Color.parse(this.subTitle));
-        }
+    public void send(final Player player) {
+        this.send(player, new PlaceholderReplacer());
     }
 
     public void send(final CommandSender player, final PlaceholderReplacer replacer) {
@@ -324,6 +202,10 @@ public class Message {
             Titles.sendTitle((Player) player, this.fadeInTicks, this.stayTicks, this.fadeOutTicks,
                     replacer.parse(Color.parse(this.title)), replacer.parse(Color.parse(this.subTitle)));
         }
+    }
+
+    public void send(final CommandSender player) {
+        this.send(player, new PlaceholderReplacer());
     }
 
     public void broadcast() {
