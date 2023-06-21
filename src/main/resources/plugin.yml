@@ -1,0 +1,6 @@
+name: Bolt
+version: ${project.version}
+main: me.consciences.bolt.BoltBukkitPlugin
+api-version: 1.20
+authors: [ Consciences ]
+description: Empower your Minecraft development with an electrifying plugin library, delivering lightning-fast enhancements and insanely nice utilities like never before.
